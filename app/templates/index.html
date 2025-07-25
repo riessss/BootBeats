@@ -21,7 +21,7 @@
             <script>
                 async function playSound() {
                   const player = new Tone.Player({
-                    url: "api/sound", // this hits your Flask backend
+                    url: "instrument/sound", 
                     autostart: true
                   }).toDestination();
                 }

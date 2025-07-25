@@ -20,21 +20,3 @@ def update_song():
 @bp.route('/song', methods=["DELETE"])
 def delete_song():
     pass
-
-
-
-@bp.route('/instrument', methods=["GET"])
-def get_song():
-    pass
-
-@bp.route('/instrument', methods=["POST"])
-def create_song():
-    pass
-
-@bp.route('/instrument', methods=["PATCH"])
-def update_song():
-    pass
-
-@bp.route('/instrument', methods=["DELETE"])
-def delete_song():
-    pass
