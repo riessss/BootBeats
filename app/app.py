@@ -3,7 +3,7 @@ from flask import (
     render_template
     )
 
-from database import db
+from .database import db
 
 def create_app():
     app = Flask(__name__)
@@ -21,4 +21,4 @@ def create_app():
         return render_template('index.html')
     
 
-    return app, db
+    return app
