@@ -7,7 +7,6 @@ from scipy.io.wavfile import write
 
 bp = Blueprint('instrument', __name__, url_prefix='/instrument')
 
-@bp.route('/sound', methods=["POST"])
 def create_sound():
     duration = 2 # seconds
     freq = 440.0 # Note A4

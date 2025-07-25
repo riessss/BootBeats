@@ -3,15 +3,10 @@ from flask import (
     render_template
     )
 
+from database import db
+
 def create_app():
     app = Flask(__name__)
-
-    from sqlalchemy.orm import DeclarativeBase
-    class Base(DeclarativeBase):
-        pass
-    
-    from flask_sqlalchemy import SQLAlchemy
-    db = SQLAlchemy(model_class=Base)
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
     db.init_app(app)
 
