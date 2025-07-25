@@ -4,8 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="http://unpkg.com/tone"></script>
 </head>
 <body>
-    <p>Test</p>
+    <header>
+        <nav>
+            <h1>Song</h1>
+        </nav>
+    </header>
+    <main>
+        <div> <!-- Make instrument -->
+
+        </div>
+        <div> <!-- Media player -->
+            <button onclick="playSound()">Play Sound</button>
+            <script>
+                async function playSound() {
+                  const player = new Tone.Player({
+                    url: "api/sound", // this hits your Flask backend
+                    autostart: true
+                  }).toDestination();
+                }
+            </script>
+        </div>
+    </main>
+
+
 </body>
 </html>
