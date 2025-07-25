@@ -13,8 +13,8 @@ def create_app():
     from .routes import songs
     app.register_blueprint(songs.bp)
 
-    from .routes import instruments
-    app.register_blueprint(instruments.bp)
+    from .routes import instrument_loops
+    app.register_blueprint(instrument_loops.bp)
 
     @app.route('/')
     def index():

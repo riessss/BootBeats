@@ -8,7 +8,7 @@ from sqlalchemy import (
     LargeBinary
 )
 
-from database import db
+from .database import db
 
 
 class Song(db.Model):
@@ -19,7 +19,7 @@ class Song(db.Model):
     title: Mapped[str] = mapped_column(
         unique=True)
     tempo: Mapped[int]
-    instruments_loop: Mapped[list["InstrumentLoop"]] = relationship(
+    instrument_loops: Mapped[list["InstrumentLoop"]] = relationship(
         back_populates="song")
 
 
@@ -37,7 +37,8 @@ class InstrumentLoop(db.Model):
         back_populates="instrument_loops")
     notes: Mapped[list["Note"]] = relationship(
         back_populates="instrument_loop")
-    song: Mapped["Song"] = relationship(back_populates="instrument_loop")
+    song: Mapped["Song"] = relationship(
+        back_populates="instrument_loops")
 
 
 class Instrument(db.Model):
