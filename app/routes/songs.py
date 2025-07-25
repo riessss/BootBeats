@@ -1,6 +1,5 @@
 from flask import (
     Blueprint,
-    jsonify,
     request
 )
 
@@ -13,23 +12,23 @@ bp = Blueprint('api', __name__, url_prefix='/api')
 @bp.route('/song/<int:song_id>', methods=["GET"])
 def get_song(song_id):
     song = db.get_or_404(Song, song_id)
-    return jsonify({"id": song.id,
-                    "title": song.title,
-                    "tempo": song.tempo,
-                    "instrument_loops": [
-                        {
-                            "id": loop.id, 
-                            "instrument_id": loop.instrument_id,
-                            "notes":[
-                                {
-                                    "id": note.id,
-                                    "pitch": note.pitch,
-                                    "start_time": note.start,
-                                    "duration": note.duration
-                                } for note in loop.notes
-                            ]
-                        } for loop in song.instrument_loops
-                    ]}), 200
+    return {"id": song.id,
+                "title": song.title,
+                "tempo": song.tempo,
+                "instrument_loops": [
+                    {
+                        "id": loop.id, 
+                        "instrument_id": loop.instrument_id,
+                        "notes":[
+                            {
+                                "id": note.id,
+                                "pitch": note.pitch,
+                                "start_time": note.start,
+                                "duration": note.duration
+                            } for note in loop.notes
+                        ]
+                    } for loop in song.instrument_loops
+                ]}, 200
 
 @bp.route('/song', methods=["POST"])
 def create_song():
