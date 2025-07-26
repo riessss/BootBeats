@@ -16,6 +16,9 @@ def create_app():
     from .routes import instrument_loops
     app.register_blueprint(instrument_loops.bp)
 
+    from .routes import notes
+    app.register_blueprint(notes.bp)
+
     @app.route('/')
     def index():
         return render_template('index.html')
