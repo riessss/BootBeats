@@ -54,6 +54,7 @@ class Instrument(db.Model):
     instrument_loops: Mapped[list["InstrumentLoop"]] = relationship(
         back_populates="instrument")
 
+# TODO: Notes need to be optional in instrument loop
 
 class Note(db.Model):
     __tablename__ = "notes"

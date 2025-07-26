@@ -1,3 +1,4 @@
+
 from flask import (
     Blueprint,
     send_file
@@ -6,7 +7,6 @@ import os
 import numpy as np
 from scipy.io.wavfile import write, read
 
-bp = Blueprint('instrument', __name__, url_prefix='/instrument')
 
 def create_sound():
     duration = 2 # seconds
@@ -20,6 +20,7 @@ def create_sound():
     file = write("sound.wav", sample_rate, audio)
 
     return send_file("sound.wav", mimetype="audio/wav")
+
 class Piano():
     def __init__(self, sample_folder):
         self.name = "piano"
@@ -54,4 +55,3 @@ class Piano():
         audio = np.int16(tone * 32767)
         file = write(note_file, self.sample_rate, audio)
         return send_file(note_file, mimetype="audio/wav")
-        pass
