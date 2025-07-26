@@ -27,7 +27,7 @@ def instert_intruments():
 # Please correct spelling and check against front end.
 def inster_default_song():
     if not Song.query.first():
-        song = Song(title="Your Song", tempo=120)
+        song = Song(title="My Dear Fish - Boots", tempo=120)
         db.session.add(song)
         db.session.flush()
 

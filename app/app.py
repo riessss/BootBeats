@@ -21,10 +21,6 @@ def create_app():
 
     from .routes import notes
     app.register_blueprint(notes.bp)
-
-    @app.route('/')
-    def index1():
-        return render_template('index.html')
     
     @app.route('/test')
     def test_db():
