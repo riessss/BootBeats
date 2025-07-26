@@ -5,6 +5,7 @@ from flask import (
 import os
 import numpy as np
 from scipy.io.wavfile import write, read
+from methods import save_note_to_db 
 
 bp = Blueprint('instrument', __name__, url_prefix='/instrument')
 
@@ -36,16 +37,44 @@ class Piano():
                 samplerate, data = read(path) #reads the file, and gives us the samplerate of the file and the data (numpy array of audio samples for the note)
                 if samplerate != self.sample_rate: #check for consistency in sample rate
                     raise ValueError(f"Sample rate missmatch in {file}")
-                self.notes[note] = data #stores the note:data pairs to self.notes dict            
-    
+                self.notes[note] = data #stores the note:data pairs to self.notes dict
+
+            
+    '''
     def _play_note(self, note):
         if note not in self.notes:#safeguard against notes not in the samples
             print("Note not available")
-        note_file_name = self.name + "_" + note + ".wav"#Initializing Note_file
-        audio = self.notes[note]#assigning the loaded audio data
-        note_file = write(note_file_name, self.sample_rate, audio)
-        return send_file(note_file_name, mimetype="audio/wav")
+        #Initializing frequency duration and a file for the notes
+        freq = self.notes[note]
+        duration = 2
+        note_file = self.name + "_" + note + ".wav"
+        #Generates the sound of a note
+        t = np.linspace(0, duration, int(self.sample_rate * duration), False)
+        tone = 0.5 * np.sin(2 * np.pi * freq * t)
+        audio = np.int16(tone * 32767)
+        file = write(note_file, self.sample_rate, audio)
+        return send_file(note_file, mimetype="audio/wav")
+    '''
+
+
+# Modified code to insert note + data into database
+    def _play_note(self, note, instrument_loop_id=None, duration=1.0):
+        if note not in self.notes:
+            print("Note not available")
+            return None
         
+        note_file_name = self.name + "_" + note + ".wav"
+        audio = self.notes[note]
+        note_file = write(note_file_name, self.sample_rate, audio)
+
+        # Store note in database if instrument_loop_id is provided
+        if instrument_loop_id:
+            save_note_to_db(pitch=note, start=0.0, duration=duration,
+                            instrument_loop_id=instrument_loop_id)
+
+        return send_file(note_file_name, mimetype="audio/wav")
+    
+
     def _play_chord(self, note_list):
         if not self.notes:
             print("no samples loaded for this instrument")
