@@ -1,7 +1,12 @@
-from flask import send_file
+from flask import (
+    Blueprint,
+    send_file
+)
+import os
 import numpy as np
-from scipy.io.wavfile import write
+from scipy.io.wavfile import write, read
 
+bp = Blueprint('instrument', __name__, url_prefix='/instrument')
 
 def create_sound():
     duration = 2 # seconds
@@ -15,7 +20,6 @@ def create_sound():
     file = write("sound.wav", sample_rate, audio)
 
     return send_file("sound.wav", mimetype="audio/wav")
-
 class Piano():
     def __init__(self, sample_folder):
         self.name = "piano"
@@ -25,17 +29,49 @@ class Piano():
         self._load_samples() #to be defined function to load the sample into the class
     
     def _load_samples(self):    
-        pass
+        for file in os.listdir(self.sample_folder): #iterate through the files in sample_folder directory (we need to create a sample folder directory)
+            if file.endswith(".wav"): #makes sure the files iterated over are wav
+                note = file.replace(".wav", "") #turns an A4.wav file into an A4 note for the key in the self.notes dict
+                path = os.path.join(self.sample_folder, file) #creates the filepath that will be read scipy.io.wavfile.read
+                samplerate, data = read(path) #reads the file, and gives us the samplerate of the file and the data (numpy array of audio samples for the note)
+                if samplerate != self.sample_rate: #check for consistency in sample rate
+                    raise ValueError(f"Sample rate missmatch in {file}")
+                self.notes[note] = data #stores the note:data pairs to self.notes dict
+
+            
     
     def _play_note(self, note):
-        if note not in self.notes:
+        if note not in self.notes:#safeguard against notes not in the samples
             print("Note not available")
-        freq = self.notes[note]
-        duration = 2
-        note_file = self.name + "_" + note + ".wav"
+        note_file_name = self.name + "_" + note + ".wav"#Initializing Note_file
+        audio = self.notes[note]#assigning the loaded audio data
+        note_file = write(note_file_name, self.sample_rate, audio)
+        return send_file(note_file_name, mimetype="audio/wav")
+        
+    def _play_chord(self, note_list):
+        if not self.notes:
+            print("no samples loaded for this instrument")
+            return
+        
+        first_note_audio = next(iter(self.notes.values()))
+        combined_audio = np.zeros_like(first_note_audio)
+        actual_notes_count = 0 #important for normalization
+        chord_notes = []
+        for n in note_list:
+            if n in self.notes:
+                current_note_audio = self.notes[n]
+                actual_notes_count += 1
+                combined_audio += current_note_audio
+                chord_notes.append(n)
 
-        t = np.linspace(0, duration, int(self.sample_rate * duration), False)
-        tone = 0.5 * np.sin(2 * np.pi * freq * t)
-        audio = np.int16(tone * 32767)
-        file = write(note_file, self.sample_rate, audio)
-        return send_file(note_file, mimetype="audio/wav")
+        if actual_notes_count == 0:
+            print("No valid notes found to form a chord")
+            return
+        
+        normalized_tone = combined_audio / actual_notes_count
+        normalized_audio = np.int16(normalized_tone * 32767)
+
+        chord_file_name = self.name + "_" + "-".join(chord_notes) + ".wav"
+        chord_file = write(chord_file_name, self.sample_rate, normalized_audio)
+        return send_file(chord_file_name, mimetype="audio/wav")
+        pass
