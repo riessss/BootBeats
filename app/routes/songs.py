@@ -11,6 +11,7 @@ bp = Blueprint('songs', __name__, url_prefix='/songs')
 
 @bp.route('')
 def index():
+    
     return render_template('index.html')
 
 def view_song(song_id):

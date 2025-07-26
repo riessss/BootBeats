@@ -18,7 +18,7 @@ class Song(db.Model):
         primary_key=True, autoincrement=True)
     title: Mapped[str] = mapped_column(
         unique=True)
-    tempo: Mapped[int]
+    tempo: Mapped[int] = mapped_column(default=120)
     instrument_loops: Mapped[list["InstrumentLoop"]] = relationship(
         back_populates="song")
 
@@ -48,8 +48,8 @@ class Instrument(db.Model):
         primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(
         unique=True)
-    wav: Mapped[bytes] = mapped_column(
-        LargeBinary)
+    '''wav: Mapped[bytes] = mapped_column(
+        LargeBinary)'''
     
     instrument_loops: Mapped[list["InstrumentLoop"]] = relationship(
         back_populates="instrument")

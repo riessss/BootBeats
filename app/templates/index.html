@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="icon" href="/path/to/wizard-icon.png" type="image/png">
+    <title>BootBeats</title>
     <script src="http://unpkg.com/tone"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -14,12 +15,37 @@
             <h1 class="text-2xl font-semibold">BootBeats</h1>
         </div>
         <div class="max-w-7xl mx-auto flex justify-center">
-            <h1 id="songTitle" class="text-2xl font-semibold">Test</h1>
-            <button id="arrowBtn" class="p-2 rounded-full hover:bg-gray-100">
+          <div class="relative flex items-center space-x-2">
+            <h1 id="songTitle" class="text-2xl font-semibold">SongName</h1>
+            <button id="songBtn" class="p-2 rounded-full hover:bg-gray-100">
                 <svg id="arrowIcon" class="w-5 h-5 text-gray-700 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 14l-6-6h12l-6 6z" clip-rule="evenodd" />
                 </svg>
             </button>
+            <div id="dropdown" class="hidden absolute left-0 top-full mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
+              <div class="py-1 space-y-1" role="menu" aria-orientation="vertical">
+                <a href="#" class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <span>SongName</span>
+                  <button class="text-gray-500 hover:text-red-700 text-xs font-bold">&times;</button>
+                </a>
+                <a href="#" class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <span>SongName</span>
+                  <button class="text-gray-500 hover:text-red-700 text-xs font-bold">&times;</button>
+                </a>
+                <a href="#" class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <span>SongName</span>
+                  <button class="text-gray-500 hover:text-red-700 text-xs font-bold">&times;</button>
+                </a>
+                <a href="#" class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <span>Add Song</span>
+                  <p class="inline-block px-3 py-1 text-green font-semibold ">
+                    +
+                  </p>
+                </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </header>
@@ -32,26 +58,46 @@
             </div>
             <div class="flex flex-col items-center">  
               <div class="flex-shrink-0 bg-white p-4 w-32 h-24 text-center">
-                🎹<br />Piano
+                🎹 Piano
               </div>
               <div class="flex-shrink-0 bg-white p-4 w-32 h-24 text-center">
-                🎸<br />Guitar
+                🎸Guitar
               </div>
               <div class="flex-shrink-0 bg-white p-4 w-32 h-24 text-center">
-                🥁<br /> Drums
+                🥁 Drums
               </div>
             </div>
-            <div class="h-32 flex flex-col align-center justify-center">
-              <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-3 rounded">
+            <div class="relative h-32 flex flex-col items-center justify-center">
+              <button id="instrumentBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
                 Add instrument
               </button>
+            
+              <div id="dropupMenu" class="hidden absolute bottom-full mb-2 w-48 bg-white rounded shadow-lg ring-1 ring-black ring-opacity-5 z-20">
+                <ul class="py-1 space-y-1">
+                  <li class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                    <span class="mr-2">🎹</span> Piano
+                  </li>
+                  <li class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                    <span class="mr-2">🎸</span> Guitar
+                  </li>
+                  <li class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                    <span class="mr-2">🥁</span> Drums
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
         <div class="w-3/4 bg-white h-full flex flex-col rounded shadow-md">
           <div class="h-full flex flex-col justify-between p-4">
-            <div class="text-center">
-              <h1 class="text-xl font-semibold">Notes</h1>
+            <div class="relative mb-4">
+              <div class="absolute top-0 right-0 w-20 flex flex-col items-end">
+                <label for="tempoSlider" class="font-semibold mb-1">
+                  <span id="tempoValue">120</span> BPM
+                </label>
+                <input id="tempoSlider" type="range" min="40" max="240" value="120" step="1" class="w-full" />
+              </div>
+              <h1 class="text-xl font-semibold text-center">Notes</h1>
             </div>
             <div class="flex flex-col items-center">
               <hr class="border-t border-gray-300 w-full my-12" />
@@ -60,11 +106,9 @@
             <div class="h-32 mt-4 flex flex-col items-center w-full space-y-3 overflow-auto h-30">
               <input id="seekBar" type="range" min="0" value="0" step="1" 
                      class="w-full accent-blue-600 rounded cursor-pointer" />
-        
               <div class="text-gray-700 text-sm select-none text-center w-full">
                 <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
               </div>
-        
               <button id="playPause" 
                       class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 max-w-max">
                 Play
@@ -76,6 +120,36 @@
     </main>
 </body>
 
-<script></script>
+<script>
+  const songBtn = document.getElementById("songBtn");
+  const dropdown = document.getElementById("dropdown");
+
+  songBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("hidden");
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!songBtn.contains(e.target) && !dropdown.contains(e.target)) {
+      dropdown.classList.add("hidden");
+    }
+  });
+</script>
+
+<script>
+const instrumentBtn = document.getElementById("instrumentBtn");
+const dropupMenu = document.getElementById("dropupMenu");
+
+instrumentBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  dropupMenu.classList.toggle("hidden");
+});
+
+document.addEventListener("click", (e) => {
+  if (!dropupMenu.contains(e.target) && !instrumentBtn.contains(e.target)) {
+    dropupMenu.classList.add("hidden");
+  }
+});
+</script>
 
 </html>
