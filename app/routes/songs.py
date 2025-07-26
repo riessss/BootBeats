@@ -1,16 +1,19 @@
 from flask import (
     Blueprint,
-    request
+    request,
+    render_template
 )
 
 from ..models import Song, InstrumentLoop
 from ..database import db
 
-bp = Blueprint('api', __name__, url_prefix='/api')
+bp = Blueprint('songs', __name__, url_prefix='/songs')
 
+@bp.route('')
+def index():
+    return render_template('index.html')
 
-@bp.route('/song/<int:song_id>', methods=["GET"])
-def get_song(song_id):
+def view_song(song_id):
     song = db.get_or_404(Song, song_id)
     return {"id": song.id,
                 "title": song.title,
@@ -30,7 +33,6 @@ def get_song(song_id):
                     } for loop in song.instrument_loops
                 ]}, 200
 
-@bp.route('/song', methods=["POST"])
 def create_song():
     if request.is_json():
         data = request.get_json()
@@ -57,9 +59,8 @@ def create_song():
             ]
         }, 201
     
-
-@bp.route('/song/<int:song_id>', methods=["DELETE"])
 def delete_song(song_id):
+    # TODO: If last song not possible to delete.
     song = Song
     db.session.delete(song)
     db.session.commit()

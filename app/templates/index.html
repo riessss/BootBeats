@@ -5,30 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="http://unpkg.com/tone"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <header>
-        <nav>
-            <h1>Song</h1>
-        </nav>
+<body class="h-svh bg-blue-100">
+    <header class="bg-white text-black shadow-md px-6 py-4">
+      <div class="flex flex-row">
+        <div class="pl-4">
+            <h1 class="text-xl font-semibold">BootBeats</h1>
+        </div>
+        <div class="max-w-7xl mx-auto flex justify-center">
+            <h1 id="songTitle" class="text-xl font-semibold">Test</h1>
+            <button id="arrowBtn" class="p-2 rounded-full hover:bg-gray-100">
+                <svg id="arrowIcon" class="w-5 h-5 text-gray-700 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 14l-6-6h12l-6 6z" clip-rule="evenodd" />
+                </svg>
+            </button>
+        </div>
+      </div>
     </header>
-    <main>
-        <div> <!-- Make instrument -->
-
+    <main class="overflow-auto pt-2">
+      <div class="flex h-[calc(100dvh-4.6rem)] p-4 gap-4">
+        <div class="w-1/4 bg-white h-full flex flex-col rounded shadow-md">
+          <div class="h-full flex flex-col justify-end p-4">
+            <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-3 rounded">
+              Add instrument
+            </button>
+          </div>
         </div>
-        <div> <!-- Media player -->
-            <button onclick="playSound()">Play Sound</button>
-            <script>
-                async function playSound() {
-                  const player = new Tone.Player({
-                    url: "instrument/sound", 
-                    autostart: true
-                  }).toDestination();
-                }
-            </script>
+        <div class="w-3/4 bg-white h-full flex flex-col rounded shadow-md">
+          <div class="mt-4 flex flex-col items-center justify-end p-4 w-full space-y-3 overflow-auto flex-grow">
+            <input id="seekBar" type="range" min="0" value="0" step="1" 
+                   class="w-full accent-blue-600 rounded cursor-pointer" />
+      
+            <div class="text-gray-700 text-sm select-none text-center w-full">
+              <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+            </div>
+      
+            <button id="playPause" 
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 max-w-max">
+              Play
+            </button>
+          </div>
         </div>
+      </div>
     </main>
-
-
 </body>
+
+<script></script>
+
 </html>
