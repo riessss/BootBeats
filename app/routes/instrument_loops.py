@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, request, jsonify
 from sqlalchemy import select, func
 
 from ..models import InstrumentLoop
@@ -7,15 +7,23 @@ from ..database import db
 bp = Blueprint('instrument', __name__, url_prefix='/instrument')
 
 
-@bp.route('/<int:song_id>/<int:instrument_id>', methods=["POST"])
-def create_instrument(song_id, instrument_id):
+@bp.route('/add_instrument', methods=['POST'])
+def add_instrument():
+    data = request.get_json()
+    song_id = data.get('song_id')
+    instrument_id = data.get('instrument_id')
+    
+    if not song_id or not instrument_id:
+        return jsonify(success=False, error="Missing song_id or instrument_id"), 400
+
     loop = InstrumentLoop(
         song_id=song_id,
-        instrument_id=instrument_id)
-    
+        instrument_id=instrument_id
+    )
     db.session.add(loop)
     db.session.commit()
     return {
+        "success": True,
         "id": loop.id,
         "song_id": loop.song_id,
         "instrument_id": loop.instrument_id
@@ -36,4 +44,6 @@ def delete_instrument(song_id, loop_id):
 
     db.session.delete(loop)
     db.session.commit()
-    return {"message": "Instrument deleted"}, 200
+    return {
+        "success": True,
+        "message": "Instrument deleted"}, 200
