@@ -1,6 +1,5 @@
 from flask import (
     Flask, 
-    render_template
     )
 
 from .database import db
@@ -21,6 +20,7 @@ def create_app():
     from .routes import notes
     app.register_blueprint(notes.bp)
 
+<<<<<<< HEAD
     @app.route('/')
     def index():
         return render_template('index.html')
@@ -44,4 +44,6 @@ def create_app():
             "loops": [l.id for l in loops]
         }
 
+=======
+>>>>>>> origin/main
     return app
