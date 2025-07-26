@@ -16,6 +16,19 @@ class Base(DeclarativeBase):
 db = SQLAlchemy(model_class=Base)
 
 
+# Database used to store all of our wav files as a queryable library.
+class Sample(db.Model):
+    __tablename__ = "samples"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    note: Mapped[str] = mapped_column()  # example: "C4", "A#3"
+    filepath: Mapped[str] = mapped_column()  # .wav file path
+    duration: Mapped[float] = mapped_column(default=0.0)  # optional (seconds)
+    instrument_id: Mapped[int] = mapped_column(ForeignKey("instruments.id"))
+        # Link to an instrument (each sample belongs to an instrument)
+    instrument: Mapped["Instrument"] = relationship(back_populates="samples")
+
+
 class Song(db.Model):
     __tablename__ = "songs"
 
@@ -71,3 +84,20 @@ class Note(db.Model):
         ForeignKey("instrument_loops.id"))
     instrument_loop: Mapped["InstrumentLoop"] = relationship(
         back_populates="notes")
+
+
+# Function to save notes & meta data to the database from each instrument input in instruments.py
+def save_note_to_db(pitch, start, duration, instrument_loop_id):
+    loop = db.session.get(InstrumentLoop, instrument_loop_id)
+    if not loop:
+        raise ValueError(f"InstrumentLoop {instrument_loop_id} does not exist")
+
+    new_note = Note(
+        pitch=pitch,
+        start=start,
+        duration=duration,
+        instrument_loop_id=instrument_loop_id
+    )
+    db.session.add(new_note)
+    db.session.commit()
+    return new_note.id

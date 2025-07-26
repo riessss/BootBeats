@@ -6,6 +6,7 @@ from flask import (
 import os
 import numpy as np
 from scipy.io.wavfile import write, read
+from methods import save_note_to_db 
 
 
 def create_sound():
@@ -40,7 +41,7 @@ class Piano():
                 self.notes[note] = data #stores the note:data pairs to self.notes dict
 
             
-    
+    '''
     def _play_note(self, note):
         #safeguard against notes not in the samples
         if note not in self.notes:
@@ -55,3 +56,22 @@ class Piano():
         audio = np.int16(tone * 32767)
         file = write(note_file, self.sample_rate, audio)
         return send_file(note_file, mimetype="audio/wav")
+    '''
+    
+
+    # Modified code to insert note + data into database
+    def _play_note(self, note, instrument_loop_id=None, duration=1.0):
+        if note not in self.notes:
+            print("Note not available")
+            return None
+        
+        note_file_name = self.name + "_" + note + ".wav"
+        audio = self.notes[note]
+        note_file = write(note_file_name, self.sample_rate, audio)
+
+        # Store note in database if instrument_loop_id is provided
+        if instrument_loop_id:
+            save_note_to_db(pitch=note, start=0.0, duration=duration,
+                            instrument_loop_id=instrument_loop_id)
+
+        return send_file(note_file_name, mimetype="audio/wav")
