@@ -7,8 +7,13 @@ from sqlalchemy import (
     ForeignKey,
     LargeBinary
 )
+from sqlalchemy.orm import DeclarativeBase
+from flask_sqlalchemy import SQLAlchemy
 
-from .database import db
+class Base(DeclarativeBase):
+    pass
+
+db = SQLAlchemy(model_class=Base)
 
 
 class Song(db.Model):
@@ -48,8 +53,6 @@ class Instrument(db.Model):
         primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(
         unique=True)
-    '''wav: Mapped[bytes] = mapped_column(
-        LargeBinary)'''
     
     instrument_loops: Mapped[list["InstrumentLoop"]] = relationship(
         back_populates="instrument")
