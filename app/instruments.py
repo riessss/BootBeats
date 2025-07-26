@@ -1,6 +1,11 @@
-from flask import send_file
+
+from flask import (
+    Blueprint,
+    send_file
+)
+import os
 import numpy as np
-from scipy.io.wavfile import write
+from scipy.io.wavfile import write, read
 
 
 def create_sound():
@@ -25,15 +30,26 @@ class Piano():
         self._load_samples() #to be defined function to load the sample into the class
     
     def _load_samples(self):    
-        pass
+        for file in os.listdir(self.sample_folder): #iterate through the files in sample_folder directory (we need to create a sample folder directory)
+            if file.endswith(".wav"): #makes sure the files iterated over are wav
+                note = file.replace(".wav", "") #turns an A4.wav file into an A4 note for the key in the self.notes dict
+                path = os.path.join(self.sample_folder, file) #creates the filepath that will be read scipy.io.wavfile.read
+                samplerate, data = read(path) #reads the file, and gives us the samplerate of the file and the data (numpy array of audio samples for the note)
+                if samplerate != self.sample_rate: #check for consistency in sample rate
+                    raise ValueError(f"Sample rate missmatch in {file}")
+                self.notes[note] = data #stores the note:data pairs to self.notes dict
+
+            
     
     def _play_note(self, note):
+        #safeguard against notes not in the samples
         if note not in self.notes:
             print("Note not available")
+        #Initializing frequency duration and a file for the notes
         freq = self.notes[note]
         duration = 2
         note_file = self.name + "_" + note + ".wav"
-
+        #Generates the sound of a note
         t = np.linspace(0, duration, int(self.sample_rate * duration), False)
         tone = 0.5 * np.sin(2 * np.pi * freq * t)
         audio = np.int16(tone * 32767)
