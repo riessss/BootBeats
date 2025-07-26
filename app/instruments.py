@@ -39,23 +39,6 @@ class Piano():
                     raise ValueError(f"Sample rate missmatch in {file}")
                 self.notes[note] = data #stores the note:data pairs to self.notes dict
 
-            
-    '''
-    def _play_note(self, note):
-        if note not in self.notes:#safeguard against notes not in the samples
-            print("Note not available")
-        #Initializing frequency duration and a file for the notes
-        freq = self.notes[note]
-        duration = 2
-        note_file = self.name + "_" + note + ".wav"
-        #Generates the sound of a note
-        t = np.linspace(0, duration, int(self.sample_rate * duration), False)
-        tone = 0.5 * np.sin(2 * np.pi * freq * t)
-        audio = np.int16(tone * 32767)
-        file = write(note_file, self.sample_rate, audio)
-        return send_file(note_file, mimetype="audio/wav")
-    '''
-
 
 # Modified code to insert note + data into database
     def _play_note(self, note, instrument_loop_id=None, duration=1.0):
