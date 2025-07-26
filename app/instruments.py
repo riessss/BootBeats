@@ -5,6 +5,7 @@ from flask import (
 import os
 import numpy as np
 from scipy.io.wavfile import write, read
+from scipy.io.wavfile import write, read
 
 bp = Blueprint('instrument', __name__, url_prefix='/instrument')
 
@@ -29,6 +30,16 @@ class Piano():
         self._load_samples() #to be defined function to load the sample into the class
     
     def _load_samples(self):    
+        for file in os.listdir(self.sample_folder): #iterate through the files in sample_folder directory (we need to create a sample folder directory)
+            if file.endswith(".wav"): #makes sure the files iterated over are wav
+                note = file.replace(".wav", "") #turns an A4.wav file into an A4 note for the key in the self.notes dict
+                path = os.path.join(self.sample_folder, file) #creates the filepath that will be read scipy.io.wavfile.read
+                samplerate, data = read(path) #reads the file, and gives us the samplerate of the file and the data (numpy array of audio samples for the note)
+                if samplerate != self.sample_rate: #check for consistency in sample rate
+                    raise ValueError(f"Sample rate missmatch in {file}")
+                self.notes[note] = data #stores the note:data pairs to self.notes dict
+
+            
         for file in os.listdir(self.sample_folder): #iterate through the files in sample_folder directory (we need to create a sample folder directory)
             if file.endswith(".wav"): #makes sure the files iterated over are wav
                 note = file.replace(".wav", "") #turns an A4.wav file into an A4 note for the key in the self.notes dict
