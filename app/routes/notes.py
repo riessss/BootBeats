@@ -3,7 +3,7 @@ from flask import (
     request
 )
 
-from ..models import InstrumentLoop, Note
+from ..models import InstrumentLoop
 from ..database import db
 
 bp = Blueprint('notes', __name__, url_prefix='/notes')

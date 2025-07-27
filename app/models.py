@@ -5,7 +5,8 @@ from sqlalchemy.orm import (
 )
 from sqlalchemy import (
     ForeignKey,
-    LargeBinary
+    LargeBinary,
+    JSON
 )
 from sqlalchemy.orm import DeclarativeBase
 from flask_sqlalchemy import SQLAlchemy
@@ -50,11 +51,10 @@ class InstrumentLoop(db.Model):
         ForeignKey("songs.id"))
     instrument_id: Mapped[int] = mapped_column(
         ForeignKey("instruments.id"))
+    notes: Mapped[list[str]] = mapped_column(JSON)
 
     instrument: Mapped["Instrument"] = relationship(
         back_populates="instrument_loops")
-    notes: Mapped[list["Note"]] = relationship(
-        back_populates="instrument_loop")
     song: Mapped["Song"] = relationship(
         back_populates="instrument_loops")
 
@@ -66,21 +66,8 @@ class Instrument(db.Model):
         primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(
         unique=True)
+    'wav: Mapped[bytes] = mapped_column(LargeBinary)'
     
     instrument_loops: Mapped[list["InstrumentLoop"]] = relationship(
         back_populates="instrument")
 
-# TODO: Notes need to be optional in instrument loop
-
-class Note(db.Model):
-    __tablename__ = "notes"
-
-    id: Mapped[int] = mapped_column(primary_key=True)
-    pitch: Mapped[str]
-    start: Mapped[float]
-    duration: Mapped[float] # In seconds
-
-    instrument_loop_id: Mapped[int] = mapped_column(
-        ForeignKey("instrument_loops.id"))
-    instrument_loop: Mapped["InstrumentLoop"] = relationship(
-        back_populates="notes")

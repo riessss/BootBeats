@@ -28,12 +28,10 @@
             <div class="text-center">
               <h1 class="text-xl font-semibold">Instruments</h1>
             </div>
-        
-            <!-- Instrument list container with ID -->
-            <div class="flex flex-col items-center" id="instrumentList">  
+            <div class="flex flex-col items-center pt-4" id="instrumentList">  
               {% for instrument_loop in instrument_loops %}
-              <div class="flex flex-row items-center" data-id="{{ instrument_loop.instrument_id }}"> 
-                <div class="flex-shrink-0 bg-white p-4 w-15 h-24 text-center">
+              <div class="flex flex-row justify-center items-center" data-id="{{ instrument_loop.instrument_id }}"> 
+                <div class="flex-shrink-0 bg-white w-15 h-16 text-center">
                   {{ instrument_icons.get(instrument_loop.instrument_id, "🎵 Unknown Instrument") }}
                   <button type="button" class="text-red-500 hover:text-red-700 font-bold pl-10 remove-instrument-btn">x</button>
                 </div>
@@ -67,6 +65,24 @@
                 </label>
               </div>
               <h1 class="text-xl font-semibold text-center">Notes</h1>
+            </div>
+            <div class="flex flex-col gap-2 pb-4">
+              {% for instrument_loop in instrument_loops %}
+              <div class="flex flex-row items-center h-14" >
+                <textarea
+                  id="notesInput"
+                  class="flex-grow border rounded p-2 resize-none"
+                  style="height: 80%; min-height: 56px;"
+                  placeholder="C4, D4, E4"
+                >{{ instrument_loop.notes | join(', ') }}</textarea>
+                <button
+                  id="saveNotesBtn"
+                  class="bg-blue-600 hover:bg-blue-700 text-white px-4 rounded font-semibold"
+                  style="height: 80%; min-height: 56px;">
+                  Save Notes
+                </button>
+              </div>
+              {% endfor %}
             </div>
             <div class="h-32 mt-4 flex flex-col items-center w-full space-y-3 overflow-auto h-30">
               <input id="seekBar" type="range" min="0" value="0" step="1" 
