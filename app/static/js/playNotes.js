@@ -6,16 +6,7 @@ const samplers = {
   Flute: new Tone.Sampler({ C5: "static/assets/samples/flute_c5.wav" }).toDestination(),
   Violin: new Tone.Sampler({ C5: "static/assets/samples/violin_c5.wav" }).toDestination(),
   Hihat: new Tone.Sampler({ C5: "static/assets/samples/hihat_c5.wav" }).toDestination(),
-  Sine: new Tone.Sampler({ C5: "static/assets/samples/sine_c5.wav" }).toDestination()
 };
-
-const song = [
-  { instrument: "piano", note: "C4", time: "0:0" },
-  { instrument: "piano", note: "E4", time: "0:1" },
-  { instrument: "piano", note: "G4", time: "0:2" },
-  { instrument: "drum", note: "C5", time: "0:0" },
-  { instrument: "drum", note: "C4", time: "0:2" }
-];
 
 function buildSongFromForms() {
   const song = [];

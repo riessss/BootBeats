@@ -39,10 +39,22 @@
               </div>
               {% endfor %}
             </div>
-            <div class="relative h-32 flex flex-col items-center justify-center">
+            <div class="relative pb-16 flex flex-col items-center justify-center">
               <button id="instrumentBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
                 Add instrument
               </button>
+              {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                  <div class="mt-3 space-y-2 fixed translate-y-[50px]">
+                    {% for category, message in messages %}
+                      <div class="relative px-4 py-3 rounded-lg shadow-lg text-white
+                                  {% if category == 'success' %}bg-green-500{% elif category == 'error' %}bg-red-500{% else %}bg-gray-800{% endif %}">
+                        {{ message }}
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              {% endwith %}
               <div id="dropupMenu" class="hidden absolute bottom-full mb-2 w-48 bg-white rounded shadow-lg ring-1 ring-black ring-opacity-5 z-20">
                 <ul id="dropupMenuList" class="py-1 space-y-1">
                   {% for instrument_icon in instrument_icons %}
@@ -111,6 +123,8 @@ document.addEventListener("click", (e) => {
     dropupMenu.classList.add("hidden");
   }
 });
+
+
 </script>
 
 <script src="static/js/playNotes.js"></script>

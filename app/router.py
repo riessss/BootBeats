@@ -4,7 +4,8 @@ from flask import (
     redirect,
     url_for,
     render_template,
-    jsonify
+    jsonify,
+    flash
 )
 from sqlalchemy import select, func
 
@@ -38,12 +39,11 @@ def index(song_id):
     instrument_icons = {
         1: "🎹 Piano",
         2: "🥁 Drums",
-        3: "🎸 Guitar",
-        4: "🪕 Bass",         
+        3: "🪕 Guitar",
+        4: "💥 Reverse Bass",         
         5: "🎼 Flute",        
         6: "🎻 Violin",
-        7: "🎺 Trumpet",
-        8: "🔊 Sine Wave",           
+        7: "🔔 Hi-Hat",          
     }
 
 
@@ -64,8 +64,10 @@ def add_instrument(instrument_id, song_id):
         select(func.count(InstrumentLoop.id)).where(InstrumentLoop.song_id == song_id)
     ).scalar_one()
 
-    if loop_count > 5:
-        return {"error": "No more than 6 instruments"}, 400
+    if loop_count == 6:
+        flash("Not more than 6 instruments allowed!", "error")
+        return redirect(url_for('songs.index', 
+                    song_id=song_id))
     
     loop = InstrumentLoop(instrument_id=instrument_id, 
                           song_id=song_id,
@@ -87,7 +89,9 @@ def delete_instrument(song_id, loop_id):
     )
 
     if loop_count <= 1:
-        return {"error": "Need at least one instrument"}, 400
+        flash("At least one instrument needed!", "error")
+        return redirect(url_for('songs.index', 
+                    song_id=song_id))
     
     loop = db.get_or_404(InstrumentLoop, loop_id)
 
