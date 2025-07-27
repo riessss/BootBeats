@@ -4,7 +4,7 @@ from flask import (
     )
 
 from .database import db
-from .models import Song, Instrument, Note, InstrumentLoop
+from .models import Song, Instrument, InstrumentLoop
 
 
 def create_app():

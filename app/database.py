@@ -2,7 +2,6 @@ from .models import (
     Song, 
     Instrument, 
     InstrumentLoop, 
-    Note,
     db
 )
 
@@ -33,23 +32,8 @@ def inster_default_song():
         db.session.flush()
 
         piano = Instrument.query.get(1)
-        piano_loop = InstrumentLoop(song_id=song.id, instrument=piano)
+        piano_loop = InstrumentLoop(song_id=song.id, instrument=piano, notes=["C5", "B5"])
         
         db.session.add(piano_loop)
         db.session.commit()
 
-# Function to save notes & meta data to the database from each instrument input in instruments.py
-def save_note_to_db(pitch, start, duration, instrument_loop_id):
-    loop = db.session.get(InstrumentLoop, instrument_loop_id)
-    if not loop:
-        raise ValueError(f"InstrumentLoop {instrument_loop_id} does not exist")
-
-    new_note = Note(
-        pitch=pitch,
-        start=start,
-        duration=duration,
-        instrument_loop_id=instrument_loop_id
-    )
-    db.session.add(new_note)
-    db.session.commit()
-    return new_note.id

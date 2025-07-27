@@ -27,16 +27,9 @@ def index(song_id):
         loop_data = {
             "id": instrument_loop.id,
             "instrument_id": instrument_loop.instrument_id,
-            "notes": [
-                {
-                    "id": note.id,
-                    "pitch": note.pitch,
-                    "start_time": note.start,
-                    "duration": note.duration
-                }
-                for note in instrument_loop.notes
-            ]
-        }
+            "notes": instrument_loop.notes
+        } 
+                
         instrument_loops.append(loop_data)
 
         instrument_icons = {

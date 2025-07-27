@@ -52,7 +52,7 @@ dropupMenuList.addEventListener('click', async (e) => {
         alert('Failed to add instrument on server: ' + (data.error || 'Unknown error'));
       }
     } catch (error) {
-      alert('Error adding instrument: ' + error.message);
+      alert('Error adding instrument: ' + error);
     }
   }
 });
