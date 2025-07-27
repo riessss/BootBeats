@@ -46,4 +46,5 @@ def delete_instrument(song_id, loop_id):
     db.session.commit()
     return {
         "success": True,
-        "message": "Instrument deleted"}, 200
+        "message": "Instrument deleted"
+        }, 200

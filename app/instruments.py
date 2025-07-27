@@ -5,7 +5,7 @@ from flask import (
 import os
 import numpy as np
 from scipy.io.wavfile import write, read
-from methods import save_note_to_db 
+from database import save_note_to_db 
 
 bp = Blueprint('instrument', __name__, url_prefix='/instrument')
 

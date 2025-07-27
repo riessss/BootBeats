@@ -56,3 +56,29 @@ dropupMenuList.addEventListener('click', async (e) => {
     }
   }
 });
+
+// Delete instrument from list
+instrumentList.addEventListener('click', async (e) => {
+  if (e.target && e.target.classList.contains('remove-instrument-btn')) {
+    const instrumentDiv = e.target.closest('[data-id]');
+    const instrumentId = instrumentDiv.dataset.id;
+
+    try {
+      const response = await fetch(`/instrument/${currentSongId}/${instrumentId}`, {
+        method: 'DELETE'
+      });
+
+      const data = await response.json();
+      console.log('Delete response:', data);
+
+      if (response.ok && data.success) {
+        instrumentDiv.remove();
+      } else {
+        alert('Failed to delete instrument: ' + (data.error || 'Unknown error'));
+      }
+    } catch (error) {
+      alert('Error deleting instrument: ' + error.message);
+    }
+  }
+});
+
