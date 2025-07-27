@@ -32,15 +32,17 @@ def index(song_id):
                 
         instrument_loops.append(loop_data)
 
-        instrument_icons = {
-            1: "🎹 Piano",
-            2: "🥁 Drums",
-            3: "🎸 Guitar",
-            4: "🎸 Bass",      
-            5: "🎶 Flute",    
-            6: "🎻 Violin",
-            7: "🎺 Trumpet"
-        }
+    instrument_icons = {
+        1: "🎹 Piano",
+        2: "🥁 Drums",
+        3: "🎸 Guitar",
+        4: "🪕 Bass",         
+        5: "🎼 Flute",        
+        6: "🎻 Violin",
+        7: "🎺 Trumpet",
+        8: "🔊 Sine Wave",    
+        9: "🥁 Snare"         
+    }
 
 
     return render_template('index.html',

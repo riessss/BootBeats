@@ -33,7 +33,9 @@
               <div class="flex flex-row justify-center items-center" data-id="{{ instrument_loop.instrument_id }}"> 
                 <div class="flex-shrink-0 bg-white w-15 h-16 text-center">
                   {{ instrument_icons.get(instrument_loop.instrument_id, "🎵 Unknown Instrument") }}
+                  <a href="{{ url_for('instrument.delete_instrument', song_id=1, loop_id=instrument_loop.id)}}" methods="POST">
                   <button type="button" class="text-red-500 hover:text-red-700 font-bold pl-10 remove-instrument-btn">x</button>
+                  </a>
                 </div>
               </div>
               {% endfor %}
@@ -46,9 +48,11 @@
                 <ul id="dropupMenuList" class="py-1 space-y-1">
                   {% for instrument_icon in instrument_icons %}
                     {% if instrument_icon not in used_instruments_ids %}
+                  <a href="{{ url_for('instrument.add_instrument', instrument_id=instrument_icon, song_id=1)}}", methods="POST">
                   <li data-id="{{ instrument_icon }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer add-instrument-item">
                     {{instrument_icons[instrument_icon]}}
                   </li>
+                  </a>
                     {% endif %}
                   {% endfor %}
                 </ul>
@@ -102,7 +106,25 @@
 </body>
 
 
-<script type="module" src="/static/js/instrument.js"></script>
+<script>
+const instrumentBtn = document.getElementById("instrumentBtn");
+const dropupMenu = document.getElementById("dropupMenu");
+const dropupMenuList = document.getElementById("dropupMenuList"); // the <ul> inside dropupMenu
+const instrumentList = document.getElementById("instrumentList");
+
+// Open instrument menu
+instrumentBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  dropupMenu.classList.toggle("hidden");
+});
+
+// Close instrument menu
+document.addEventListener("click", (e) => {
+  if (!dropupMenu.contains(e.target) && !instrumentBtn.contains(e.target)) {
+    dropupMenu.classList.add("hidden");
+  }
+});
+</script>
 <script>
   const currentSongId = {{ song.id }};
 </script>
