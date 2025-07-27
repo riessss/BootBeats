@@ -48,7 +48,7 @@ class Piano():
         
         note_file_name = self.name + "_" + note + ".wav"
         audio = self.notes[note]
-        note_file = write(note_file_name, self.sample_rate, audio)
+        write(note_file_name, self.sample_rate, audio)
 
         # Store note in database if instrument_loop_id is provided
         if instrument_loop_id:
@@ -82,6 +82,68 @@ class Piano():
         normalized_audio = np.int16(normalized_tone * 32767)
 
         chord_file_name = self.name + "_" + "-".join(chord_notes) + ".wav"
-        chord_file = write(chord_file_name, self.sample_rate, normalized_audio)
+        write(chord_file_name, self.sample_rate, normalized_audio)
         return send_file(chord_file_name, mimetype="audio/wav")
+        pass
+
+class Drums():
+    def __init__(self, sample_folder):
+        self.name = "drums"
+        self.sample_folder = sample_folder
+        self.elements = {} #dict for notes
+        self.sample_rate = 44100 #constant rate
+        self._load_samples() #to be defined function to load the sample into the class
+
+    def _load_samples(self):    
+        for file in os.listdir(self.sample_folder):
+            if file.endswith(".wav"): 
+                element = file.replace(".wav", "")
+                path = os.path.join(self.sample_folder, file) 
+                samplerate, data = read(path) 
+                if samplerate != self.sample_rate: 
+                    raise ValueError(f"Sample rate missmatch in {file}")
+                self.elements[element] = data 
+
+    def _play_element(self, element, instrument_loop_id=None, duration=1.0):
+        if element not in self.elements:
+            print("Element not available")
+            return None
+        
+        element_file_name = self.name + "_" + element + ".wav"
+        audio = self.elements[element]
+        write(element_file_name, self.sample_rate, audio)
+
+        # Store note in database if instrument_loop_id is provided
+        if instrument_loop_id:
+            save_note_to_db(pitch=element, start=0.0, duration=duration,
+                            instrument_loop_id=instrument_loop_id)
+
+        return send_file(element_file_name, mimetype="audio/wav")
+    
+    def _play_beat(self, element_list):
+        if not self.elements:
+            print("no samples loaded for this instrument")
+            return
+        
+        actual_element_count = 0 #important for normalization
+        beat_elements_name = []
+        audio_arrays_to_concatenate = []
+
+        for n in element_list:
+            if n in self.elements:
+                current_element_audio = self.elements[n]
+                actual_element_count += 1
+                beat_elements_name.append(n)
+                audio_arrays_to_concatenate.append(current_element_audio)
+
+        if actual_element_count == 0:
+            print("No valid elements found to form a beat")
+            return
+        
+        concatenated_audio = np.concatenate(audio_arrays_to_concatenate)
+        normalized_audio = concatenated_audio
+
+        beat_file_name = self.name + "_" + "-".join(beat_elements_name) + ".wav"
+        write(beat_file_name, self.sample_rate, normalized_audio)
+        return send_file(beat_file_name, mimetype="audio/wav")
         pass
