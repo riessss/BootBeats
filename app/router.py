@@ -29,7 +29,8 @@ def index(song_id):
         loop_data = {
             "id": instrument_loop.id,
             "instrument_id": instrument_loop.instrument_id,
-            "notes": instrument_loop.notes
+            "notes": instrument_loop.notes,
+            "instrument_name": instrument_loop.instrument.name
         } 
                 
         instrument_loops.append(loop_data)
