@@ -33,7 +33,7 @@
               <div class="flex flex-row justify-center items-center" data-id="{{ instrument_loop.instrument_id }}"> 
                 <div class="flex-shrink-0 bg-white w-15 h-16 text-center">
                   {{ instrument_icons.get(instrument_loop.instrument_id, "🎵 Unknown Instrument") }}
-                  <a href="{{ url_for('instrument.delete_instrument', song_id=1, loop_id=instrument_loop.id)}}" methods="POST">
+                  <a href="{{ url_for('songs.delete_instrument', song_id=1, loop_id=instrument_loop.id)}}" methods="POST">
                   <button type="button" class="text-red-500 hover:text-red-700 font-bold pl-10 remove-instrument-btn">x</button>
                   </a>
                 </div>
@@ -48,7 +48,7 @@
                 <ul id="dropupMenuList" class="py-1 space-y-1">
                   {% for instrument_icon in instrument_icons %}
                     {% if instrument_icon not in used_instruments_ids %}
-                  <a href="{{ url_for('instrument.add_instrument', instrument_id=instrument_icon, song_id=1)}}", methods="POST">
+                  <a href="{{ url_for('songs.add_instrument', instrument_id=instrument_icon, song_id=1)}}", methods="POST">
                   <li data-id="{{ instrument_icon }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer add-instrument-item">
                     {{instrument_icons[instrument_icon]}}
                   </li>
@@ -72,20 +72,14 @@
             </div>
             <div class="flex flex-col gap-2 pb-4">
               {% for instrument_loop in instrument_loops %}
-              <div class="flex flex-row items-center h-14" >
-                <textarea
-                  id="notesInput"
-                  class="flex-grow border rounded p-2 resize-none"
-                  style="height: 80%; min-height: 56px;"
-                  placeholder="C4, D4, E4"
-                >{{ instrument_loop.notes | join(', ') }}</textarea>
-                <button
-                  id="saveNotesBtn"
-                  class="bg-blue-600 hover:bg-blue-700 text-white px-4 rounded font-semibold"
-                  style="height: 80%; min-height: 56px;">
-                  Save Notes
-                </button>
-              </div>
+              <form method="POST" action="{{ url_for('songs.update_notes', loop_id=instrument_loop.id) }}">
+                <div class="flex flex-row items-center h-14" >
+                  <textarea name="notes" class="flex-grow border rounded p-2 h-12 resize-none" placeholder="C4, D4, E4">{{ instrument_loop.notes | join(', ') }}</textarea>
+                  <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white h-12 px-4 rounded font-semibold">
+                    Save Notes
+                  </button>
+                </div>
+              </form>
               {% endfor %}
             </div>
             <div class="h-32 mt-4 flex flex-col items-center w-full space-y-3 overflow-auto h-30">
@@ -124,9 +118,6 @@ document.addEventListener("click", (e) => {
     dropupMenu.classList.add("hidden");
   }
 });
-</script>
-<script>
-  const currentSongId = {{ song.id }};
 </script>
 
 </html>
