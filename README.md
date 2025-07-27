@@ -25,6 +25,7 @@ cd BootBeats
 ```bash
 uv .venv
 source .venv/bin/activate # or .venv\Scripts\activate on Windows
+uv sync
 ```
 #### 3. Run the app
 ```bash
