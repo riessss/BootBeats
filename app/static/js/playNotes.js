@@ -11,12 +11,10 @@ const samplers = {
 function buildSongFromForms() {
   const song = [];
   const forms = document.querySelectorAll('form[data-instrument]');
-  console.log(`Found ${forms.length} forms`);
 
   forms.forEach((form, formIndex) => {
     const instrument = form.dataset.instrument;
     const textarea = form.querySelector('textarea[name="notes"]');
-    console.log(`Form #${formIndex} — instrument: ${instrument}`);
 
     if (!instrument || !textarea) {
       console.warn(`Skipping form #${formIndex} due to missing instrument or textarea`);
@@ -24,19 +22,15 @@ function buildSongFromForms() {
     }
 
     const rawText = textarea.value;
-    console.log(`Textarea raw input: "${rawText}"`);
 
     const notes = rawText.split(',').map(n => n.trim()).filter(Boolean);
-    console.log(`Parsed notes:`, notes);
 
     notes.forEach((note, index) => {
       const time = `0:${index}`;
-      console.log(`→ Adding: { instrument: "${instrument}", note: "${note}", time: "${time}" }`);
       song.push({ instrument, note, time });
     });
   });
 
-  console.log("Final song array:", song);
   return song;
 }
 
@@ -57,4 +51,5 @@ document.getElementById("playBtn").addEventListener("click", async () => {
   const song = buildSongFromForms()
   scheduleSong(song);
   Tone.Transport.start()
+  startSlider(duration);
 });
