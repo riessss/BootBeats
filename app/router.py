@@ -42,8 +42,7 @@ def index(song_id):
         5: "🎼 Flute",        
         6: "🎻 Violin",
         7: "🎺 Trumpet",
-        8: "🔊 Sine Wave",    
-        9: "🥁 Snare"         
+        8: "🔊 Sine Wave",           
     }
 
 

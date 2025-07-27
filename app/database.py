@@ -8,24 +8,14 @@ from .models import (
 # Please correct spelling and check against front end.
 def instert_intruments():
     if Instrument.query.first() is None:
-        with open("app/static/assets/samples/piano_c5.wav", "rb") as f:
-            piano = Instrument(name="Piano", wav=f.read())
-        with open("app/static/assets/samples/piano_c5.wav", "rb") as f:
-            drum = Instrument(name="Drum", wav=f.read())
-        with open("app/static/assets/samples/piano_c5.wav", "rb") as f:
-            guitar = Instrument(name="Guitar", wav=f.read())
-        with open("app/static/assets/samples/piano_c5.wav", "rb") as f:
-            reverse_bass = Instrument(name="Bass", wav=f.read())
-        with open("app/static/assets/samples/piano_c5.wav", "rb") as f:
-            flute = Instrument(name="Flute", wav=f.read())
-        with open("app/static/assets/samples/piano_c5.wav", "rb") as f:
-            violin = Instrument(name="Violon", wav=f.read())
-        with open("app/static/assets/samples/piano_c5.wav", "rb") as f:
-            hihat = Instrument(name="Trumpet", wav=f.read())
-        with open("app/static/assets/samples/piano_c5.wav", "rb") as f:
-            sine = Instrument(name="Sine", wav=f.read())
-        with open("app/static/assets/samples/piano_c5.wav", "rb") as f:
-            snare = Instrument(name="Snare", wav=f.read())
+        piano = Instrument(name="Piano")
+        drum = Instrument(name="Drum")
+        guitar = Instrument(name="Guitar")
+        reverse_bass = Instrument(name="Bass")
+        flute = Instrument(name="Flute")
+        violin = Instrument(name="Violon")
+        hihat = Instrument(name="Trumpet")
+        sine = Instrument(name="Sine")
 
         db.session.add(piano)
         db.session.add(drum)
@@ -35,7 +25,6 @@ def instert_intruments():
         db.session.add(violin)
         db.session.add(hihat)
         db.session.add(sine)
-        db.session.add(snare)
         db.session.commit()
 
 # Please correct spelling and check against front end.

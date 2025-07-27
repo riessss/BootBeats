@@ -5,7 +5,6 @@ from sqlalchemy.orm import (
 )
 from sqlalchemy import (
     ForeignKey,
-    LargeBinary,
     JSON
 )
 from sqlalchemy.orm import DeclarativeBase
@@ -15,19 +14,6 @@ class Base(DeclarativeBase):
     pass
 
 db = SQLAlchemy(model_class=Base)
-
-
-# Database used to store all of our wav files as a queryable library.
-'''class Sample(db.Model):
-    __tablename__ = "samples"
-
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    note: Mapped[str] = mapped_column()  # example: "C4", "A#3"
-    filepath: Mapped[str] = mapped_column()  # .wav file path
-    duration: Mapped[float] = mapped_column(default=0.0)  # optional (seconds)
-    instrument_id: Mapped[int] = mapped_column(ForeignKey("instruments.id"))
-        # Link to an instrument (each sample belongs to an instrument)
-    instrument: Mapped["Instrument"] = relationship(back_populates="samples")'''
 
 
 class Song(db.Model):
@@ -66,7 +52,6 @@ class Instrument(db.Model):
         primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(
         unique=True)
-    wav: Mapped[bytes] = mapped_column(LargeBinary)
     
     instrument_loops: Mapped[list["InstrumentLoop"]] = relationship(
         back_populates="instrument")

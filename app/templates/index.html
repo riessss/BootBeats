@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/path/to/wizard-icon.png" type="image/png">
     <title>BootBeats</title>
     <script src="http://unpkg.com/tone"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -63,16 +62,14 @@
         <div class="w-3/4 bg-white h-full flex flex-col rounded shadow-md">
           <div class="h-full flex flex-col justify-between p-4">
             <div class="relative mb-4">
-              <div class="absolute top-0 right-0 w-20 flex flex-col items-end">
-                <label for="tempoSlider" class="font-semibold mb-1">
-                  <span id="tempoValue"> {{ song.tempo }}</span> BPM
-                </label>
+              <div class="absolute top-0 right-0 w-20 flex flex-col items-end font-semibold mb-1">
+                  <span> {{ song.tempo }} BPM </span>
               </div>
               <h1 class="text-xl font-semibold text-center">Notes</h1>
             </div>
             <div class="flex flex-col gap-2 pb-4">
               {% for instrument_loop in instrument_loops %}
-              <form method="POST" action="{{ url_for('songs.update_notes', loop_id=instrument_loop.id) }}">
+              <form method="POST" action="{{ url_for('songs.update_notes', loop_id=instrument_loop.id) }}" data-instrument="{{ instrument_loop.instrument }}">
                 <div class="flex flex-row items-center h-14" >
                   <textarea name="notes" class="flex-grow border rounded p-2 h-12 resize-none" placeholder="C4, D4, E4">{{ instrument_loop.notes | join(', ') }}</textarea>
                   <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white h-12 px-4 rounded font-semibold">
@@ -88,8 +85,7 @@
               <div class="text-gray-700 text-sm select-none text-center w-full">
                 <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
               </div>
-              <button id="playPause" 
-                      class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 max-w-max">
+              <button id="playBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 max-w-max">
                 Play
               </button>
             </div>
@@ -119,5 +115,7 @@ document.addEventListener("click", (e) => {
   }
 });
 </script>
+
+<script src="static/js/playNotes.js"></script>
 
 </html>
