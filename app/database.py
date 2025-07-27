@@ -11,11 +11,10 @@ def instert_intruments():
         piano = Instrument(name="Piano")
         drum = Instrument(name="Drum")
         guitar = Instrument(name="Guitar")
-        reverse_bass = Instrument(name="Bass")
+        reverse_bass = Instrument(name="Reverse_bass")
         flute = Instrument(name="Flute")
-        violin = Instrument(name="Violon")
-        hihat = Instrument(name="Trumpet")
-        sine = Instrument(name="Sine")
+        violin = Instrument(name="Violin")
+        hihat = Instrument(name="Hihat")
 
         db.session.add(piano)
         db.session.add(drum)
@@ -24,7 +23,6 @@ def instert_intruments():
         db.session.add(flute)
         db.session.add(violin)
         db.session.add(hihat)
-        db.session.add(sine)
         db.session.commit()
 
 # Please correct spelling and check against front end.
