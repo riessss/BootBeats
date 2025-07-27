@@ -27,7 +27,7 @@ def create_app():
         return {
             "songs": [s.title for s in songs],
             "instruments": [i.name for i in instruments],
-            "loops": [l.id for l in loops]
+            "loops": [(l.id, l.notes) for l in loops]
         }
 
     return app

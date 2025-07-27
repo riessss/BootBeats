@@ -21,6 +21,8 @@ def create_sound():
     file = write("sound.wav", sample_rate, audio)
 
     return send_file("sound.wav", mimetype="audio/wav")
+
+
 class Piano():
     def __init__(self, sample_folder):
         self.name = "piano"
