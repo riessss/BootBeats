@@ -23,7 +23,7 @@ cd BootBeats
 ```
 #### 2. Create virtual environment and install dependencies:
 ```bash
-uv .venv
+uv venv
 source .venv/bin/activate # or .venv\Scripts\activate on Windows
 uv sync
 ```
