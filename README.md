@@ -31,3 +31,9 @@ uv sync
 ```bash
 uv run main.py
 ```
+
+## 🛠 Tech Stack
+- **Flask** – Backend web framework  
+- **SQLAlchemy** – ORM for database interaction  
+- **Tailwind CSS** – Utility-first CSS framework  
+- **Tone.js** – Web audio library for music synthesis
