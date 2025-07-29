@@ -16,7 +16,10 @@
         </div>
         <div class="max-w-7xl mx-auto flex justify-center">
           <div class="relative flex items-center space-x-2">
-            <h1 id="songTitle" class="text-2xl font-semibold">{{ song.title }}</h1>
+            <button id="titleBtn">
+              <h1 id="songTitle" class="text-2xl font-semibold">{{ song.title }}</h1>
+            </button>
+            <h1 id="songArtist" class="text-2xl font-semibold"> - {{ song.artist }}</h1>
           </div>
         </div>
       </div>
@@ -106,19 +109,63 @@
         </div>
       </div>
     </main>
+<style>
+#newsongTitle {
+  font-size: large;
+  font-weight: 600;
+  border-width: 2;
+  height: 24px;
+}
+</style>
+
+
 <script>
-const instrumentBtn = document.getElementById("instrumentBtn");
-const dropupMenu = document.getElementById("dropupMenu");
-const dropupMenuList = document.getElementById("dropupMenuList"); // the <ul> inside dropupMenu
-const instrumentList = document.getElementById("instrumentList");
+document.getElementById('titleBtn').addEventListener('click', function() {
+  const title = document.getElementById('songTitle');
+  const currentTitle = title.textContent;
+
+  const textarea = document.createElement('textarea');
+  textarea.value = currentTitle;
+  textarea.id = 'newsongTitle';
+
+  title.parentNode.replaceChild(textarea, title);
+
+  this.removeEventListener('click', arguments.callee);
+  this.addEventListener('click', function() {
+    const newSongTitle = textarea.value;
+    const newTitle = document.createElement('h1');
+    newTitle.id = 'myTitle';
+    newTitle.textContent = newHeadingText;
+
+    textarea.parentNode.replaceChild(newTitle, textarea);
+    this.textContent = 'Edit'
+  });
+});
+
+
+document.addEventListener('DOMContentLoaded', e => {
+  const songTitle = document.getElementById('songTitle');
+  const titleBtn = document.getElementById('titleBtn');
+
+  titleBtn.addEventListener('click', () => {
+    const title = "test";
+    songTitle.textContent = title;
+  });
+});
+
 
 // Open instrument menu
+const instrumentBtn = document.getElementById("instrumentBtn");
+const dropupMenu = document.getElementById("dropupMenu");
+
 instrumentBtn.addEventListener("click", (e) => {
   e.stopPropagation();
   dropupMenu.classList.toggle("hidden");
 });
 
 // Close instrument menu
+const dropupMenuList = document.getElementById("dropupMenuList");
+const instrumentList = document.getElementById("instrumentList");
 document.addEventListener("click", (e) => {
   if (!dropupMenu.contains(e.target) && !instrumentBtn.contains(e.target)) {
     dropupMenu.classList.add("hidden");

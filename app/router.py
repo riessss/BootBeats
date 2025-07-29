@@ -113,3 +113,18 @@ def update_notes(loop_id):
     db.session.commit()
     return redirect(url_for('songs.index',
                             song_id=loop.song_id))
+
+@bp.route('/change_title/<int:song_id>', methods=["PATCH"])
+def update_title(song_id):
+    song = db.get_or_404(Song, song_id)
+    
+    data = request.get_json()
+    new_title = data.get('title')
+    
+    song.title = new_title
+    db.session.commit()
+
+    return {"data":{
+        "song_id": song_id,
+        "title": new_title
+    }}

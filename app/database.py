@@ -5,7 +5,7 @@ from .models import (
     db
 )
 
-# Please correct spelling and check against front end.
+
 def instert_intruments():
     if Instrument.query.first() is None:
         piano = Instrument(name="Piano")
@@ -25,10 +25,10 @@ def instert_intruments():
         db.session.add(hihat)
         db.session.commit()
 
-# Please correct spelling and check against front end.
+
 def inster_default_song():
     if not Song.query.first():
-        song = Song(title="My Dear Fish - Boots", tempo=120)
+        song = Song(title="My Dear Fish", artist="Rapper",tempo=120)
         db.session.add(song)
         db.session.flush()
 

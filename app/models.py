@@ -23,6 +23,8 @@ class Song(db.Model):
         primary_key=True, autoincrement=True)
     title: Mapped[str] = mapped_column(
         unique=True)
+    artist: Mapped[str] = mapped_column(
+        unique=True)
     tempo: Mapped[int] = mapped_column(default=120)
     instrument_loops: Mapped[list["InstrumentLoop"]] = relationship(
         back_populates="song")
