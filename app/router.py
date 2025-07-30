@@ -8,17 +8,24 @@ from flask import (
     flash
 )
 from sqlalchemy import select, func
+from flask_login import login_required, current_user
 
-from .models import Song, InstrumentLoop, db
+from .models import Song, InstrumentLoop, User, db
 
 bp = Blueprint('songs', __name__, url_prefix='/')
 
+@login_required
 @bp.route('/')
 def redirect_first_song():
-    first_song = Song.query.first()
-    return redirect(url_for('.index', song_id=first_song.id))
+    if current_user.is_authenticated:
+        user_id = current_user.id
+    else:
+        return redirect('/auth/login')
+    first_song_id = db.session.scalars(select(Song.id).where(Song.user_id==user_id)).first()
+    return redirect(url_for('.index', user_id=user_id, song_id=first_song_id))
 
 
+@login_required
 @bp.route('/<int:song_id>')
 def index(song_id):
     song = db.get_or_404(Song, song_id)
@@ -54,6 +61,7 @@ def index(song_id):
                            used_instruments_ids=used_instruments_ids)
 
 
+@login_required
 @bp.route('/add_instrument/<int:instrument_id>/<int:song_id>', methods=['POST', 'GET'])
 def add_instrument(instrument_id, song_id):
 
@@ -80,7 +88,7 @@ def add_instrument(instrument_id, song_id):
     return redirect(url_for('songs.index', 
                     song_id=song_id))
 
-
+@login_required
 @bp.route('/<int:song_id>/<int:loop_id>', methods=["POST", "GET"])
 def delete_instrument(song_id, loop_id):
     loop_count = db.session.scalar(
@@ -102,6 +110,7 @@ def delete_instrument(song_id, loop_id):
                     song_id=song_id))
 
 
+@login_required
 @bp.route('/<int:loop_id>', methods=["POST"])
 def update_notes(loop_id):
     notes_string = request.form.get('notes', '')
@@ -113,6 +122,7 @@ def update_notes(loop_id):
     db.session.commit()
     return redirect(url_for('songs.index',
                             song_id=loop.song_id))
+
 
 @bp.route('/change_title/<int:song_id>', methods=["PATCH"])
 def update_title(song_id):
