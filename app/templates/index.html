@@ -22,6 +22,9 @@
             <h1 id="songArtist" class="text-2xl font-semibold"> - {{ song.artist }}</h1>
           </div>
         </div>
+        <div>
+          <a href="{{ url_for('auth.logout')}}">Logout</a>
+        </div>
       </div>
     </header>
     <main class="overflow-auto pt-2">
