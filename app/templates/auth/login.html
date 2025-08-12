@@ -3,22 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>Sign In</h1>
-    <form action="" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.username.label }}<br>
-            {{ form.username(size=32) }}
-        </p>
-        <p>
-            {{ form.password.label }}<br>
-            {{ form.password(size=32) }}
-        </p>
-        <p>{{ form.submit() }}</p>
-    </form>
-    <a href="{{ url_for('auth.register')}}">Register</a>
+<body class="bg-blue-100 min-h-screen flex flex-col justify-center items-center pb-20">
+    <div class="pb-8">
+        <h1 class="text-4xl font-semibold">BootBeats</h1>
+    </div>
+    <div class="bg-white p-8 rounded shadow-md max-w-md w-full h-64 gap-2">
+        <h1 class="font-bold text-xl">Sign In</h1>
+        <form action="" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <p class="pt-2">
+                {{ form.username.label }}<br>
+                {{ form.username(size=32, class_="w-full px-2 py-1 border border-gray-300 rounded") }}
+            </p>
+            <p class="pt-2">
+                {{ form.password.label }}<br>
+                {{ form.password(size=32, class_="w-full px-2 py-1 border border-gray-300 rounded") }}
+            </p>
+            <p class="pt-2">{{ form.submit(class_="border rounded bg-green-500 py-1 px-2") }}</p>
+        </form>
+        <div class="flex items-center space-x-2 pt-2">
+          <p class="m-0">New?</p>
+          <a href="{{ url_for('auth.register')}}" class="inline-block text-blue-600 hover:text-blue-300">Register</a>
+        </div>    
+    </div>
 </body>
 </html>
