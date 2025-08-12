@@ -31,7 +31,7 @@ def login():
         user = db.session.scalar(
             select(User).where(User.username == form.username.data))
         if user is None or not user.check_password(form.password.data):
-            return redirect(url_for('login'))
+            return redirect(url_for('auth.login'))
         login_user(user)
         next_page = request.args.get('next')
         if not next_page or urlsplit(next_page).netloc != '':
