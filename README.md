@@ -1,7 +1,8 @@
 # 🎵 BootBeats
 Welcome to BootBeats, the place where you can relax and take a break from coding. I will guide you trough making some relaxing music so that you can take the most out of your break. The application has a clear UI and stores your song, for if you want to take a full day away from your computer. 
 ## 🖥️ Instructions and Preview
-- First create an account to log in to, after that login to go to your song
+- First create an account on the register page
+- After that login to go to your song page
 - To add notes write the notes in the text with a ', ' in between
 - If you want to skip a note write a '-' in between the commas
 - If you want to save the notes add the save notes button
