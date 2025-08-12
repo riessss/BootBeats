@@ -28,7 +28,7 @@ def instert_intruments():
 
 
 def insert_default_song(user_id):
-    if not Song.query.filter(User.id==user_id).first():
+    if not Song.query.filter(Song.user_id==user_id).first():
         song = Song(user_id=user_id, title="First", artist="Rapper",tempo=120)
         db.session.add(song)
         db.session.flush()

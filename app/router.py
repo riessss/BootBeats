@@ -21,8 +21,10 @@ def redirect_first_song():
         user_id = current_user.id
     else:
         return redirect('/auth/login')
-    first_song_id = db.session.scalars(select(Song.id).where(Song.user_id==user_id)).first()
-    return redirect(url_for('.index', user_id=user_id, song_id=first_song_id))
+    print("User:", current_user.id, current_user.is_authenticated)
+    song = Song.query.filter(Song.user_id == user_id).first()
+    print("Song found:", song)
+    return redirect(url_for('.index', user_id=user_id, song_id=song.id))
 
 
 @login_required
