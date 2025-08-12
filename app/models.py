@@ -51,8 +51,7 @@ class Song(db.Model):
         primary_key=True, autoincrement=True)
     user_id: Mapped[str] = mapped_column(
         ForeignKey("users.id"))
-    title: Mapped[str] = mapped_column(
-        unique=True)
+    title: Mapped[str]
     artist: Mapped[str] = mapped_column(
         unique=True)
     tempo: Mapped[int] = mapped_column(default=120)

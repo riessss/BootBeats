@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-blue-100 min-h-screen flex flex-col justify-center items-center pb-20">
     <div class="pb-8">
@@ -12,37 +13,40 @@
     <div class="bg-white p-8 rounded shadow-md max-w-md w-full gap-2">
         <form action="" method="post">
             {{ form.hidden_tag() }}
-            <p>
+            <p class="pt-2">
                 {{ form.username.label }}<br>
-                {{ form.username(size=32) }}<br>
+                {{ form.username(size=32, class_="w-full px-2 py-1 border border-gray-300 rounded") }}<br>
                 {% for error in form.username.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             </p>
-            <p>
+            <p class="pt-2">
                 {{ form.email.label }}<br>
-                {{ form.email(size=64) }}<br>
+                {{ form.email(size=64, class_="w-full px-2 py-1 border border-gray-300 rounded") }}<br>
                 {% for error in form.email.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             </p>
-            <p>
+            <p class="pt-2">
                 {{ form.password.label }}<br>
-                {{ form.password(size=32) }}<br>
+                {{ form.password(size=32, class_="w-full px-2 py-1 border border-gray-300 rounded") }}<br>
                 {% for error in form.password.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             </p>
-            <p>
+            <p class="pt-2">
                 {{ form.password2.label }}<br>
-                {{ form.password2(size=32) }}<br>
+                {{ form.password2(size=32, class_="w-full px-2 py-1 border border-gray-300 rounded") }}<br>
                 {% for error in form.password2.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             </p>
-            <p>{{ form.submit() }}</p>
+            <p class="pt-2">{{ form.submit(class_="border rounded bg-green-500 py-1 px-2") }}</p>
         </form>
-        <a href="{{ url_for('auth.login')}}">Sign In</a>
+        <div class="flex items-center space-x-2 pt-2">
+            <p>Already an account?</p>
+            <a href="{{ url_for('auth.login')}}" class="inline-block text-blue-600 hover:text-blue-300">Sign In</a>
+        </div>
     </div>
 </body>
 </html>
